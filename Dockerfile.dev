@@ -1,0 +1,29 @@
+# Development Dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S maiello -u 1001
+
+# Copy package files
+COPY --chown=maiello:nodejs package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm ci
+
+# Create uploads directory
+RUN mkdir -p uploads && chown maiello:nodejs uploads
+
+USER maiello
+
+EXPOSE 5000
+
+# Use dumb-init to handle signals properly
+ENTRYPOINT ["dumb-init", "--"]
+
+CMD ["npm", "run", "dev"]
