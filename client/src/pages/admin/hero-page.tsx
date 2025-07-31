@@ -57,20 +57,20 @@ export default function HeroPage() {
   
   // Rellenar el formulario cuando se cargan los datos
   useEffect(() => {
-    if (heroSettings) {
+    if (heroSettings && typeof heroSettings === 'object' && 'title' in heroSettings) {
       form.reset({
-        title: heroSettings.title || "",
-        subtitle: heroSettings.subtitle || "",
-        backgroundImage: heroSettings.backgroundImage || "",
-        buttonText1: heroSettings.buttonText1 || "",
-        buttonLink1: heroSettings.buttonLink1 || "",
-        buttonText2: heroSettings.buttonText2 || "",
-        buttonLink2: heroSettings.buttonLink2 || "",
-        imagePosition: heroSettings.imagePosition || "center center",
-        imageScale: heroSettings.imageScale || 1
+        title: (heroSettings as any).title || "",
+        subtitle: (heroSettings as any).subtitle || "",
+        backgroundImage: (heroSettings as any).backgroundImage || "",
+        buttonText1: (heroSettings as any).buttonText1 || "",
+        buttonLink1: (heroSettings as any).buttonLink1 || "",
+        buttonText2: (heroSettings as any).buttonText2 || "",
+        buttonLink2: (heroSettings as any).buttonLink2 || "",
+        imagePosition: (heroSettings as any).imagePosition || "center center",
+        imageScale: (heroSettings as any).imageScale || 1
       });
       
-      updatePreview(heroSettings.imagePosition, heroSettings.imageScale);
+      updatePreview((heroSettings as any).imagePosition, (heroSettings as any).imageScale);
     }
   }, [heroSettings, form]);
   

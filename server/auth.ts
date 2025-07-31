@@ -83,7 +83,7 @@ export function setupAuth(app: Express) {
           return done(null, false, { message: "Contraseña incorrecta" });
         }
         
-        return done(null, user);
+        return done(null, user as any);
       } catch (error) {
         return done(error);
       }
@@ -97,7 +97,7 @@ export function setupAuth(app: Express) {
   passport.deserializeUser(async (id: number, done) => {
     try {
       const user = await storage.getUser(id);
-      done(null, user);
+      done(null, user as any);
     } catch (error) {
       done(error);
     }
@@ -108,7 +108,7 @@ export function setupAuth(app: Express) {
 
   // Rutas de autenticación
   app.post("/api/admin/login", (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
+    passport.authenticate("local", (err: any, user: any, info: any) => {
       if (err) {
         return next(err);
       }
